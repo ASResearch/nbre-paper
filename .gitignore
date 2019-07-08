@@ -1,0 +1,15 @@
+en/*.cut
+en/sample-sigplan.pdf
+en/*.log
+en/*.aux
+en/*.out
+
+ch/*.aux
+ch/*.bbl
+ch/*.blg
+ch/*.log
+ch/*.out
+ch/main.pdf
+ch/*.dvi
+ch/*.ps
+ch/*.toc
