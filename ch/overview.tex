@@ -1,0 +1,134 @@
+% !TEX root = main.tex
+
+\section{系统架构}
+
+基于对区块链系统模型的抽象，以及在此之上对系统各方面的考量，区块链运行时环境由以下几个部分组成：
+协议表示管理模块、协议表示数据库、编译器前端、中间表示管理模块以及执行引擎。
+
+区块链运行时环境实施升级的协议来自于链上，协议通过发送交易部署上链。
+具体来说，每一个协议实质上是一份源代码，源代码及其元数据（协议名称、协议版本号、所依赖的协议与版本号）将被封装到一条交易的数据字段中。
+一条交易的数据字段中只允许存放一份协议，但一个区块可以包含多条带有升级协议的交易。
+带有升级协议的交易由委员会签名（多签），任何单独个体对该类型交易的签名将无法通过验证。
+
+\begin{tikzpicture}
+
+\pgfmathsetmacro{\OTX}{1.0}
+\pgfmathsetmacro{\INX}{0.7}
+\pgfmathsetmacro{\OTY}{1.0}
+
+\node [] (start) at (0, 0) {Blockchain};
+
+\node [align=center] (block1) at ($(start.south) + (0, -\OTY)$)
+{$B_{1}$};
+\node [fit=(block1), draw] (box1) {};
+
+\node [align=left, minimum height=4ex] (block2) at ($(box1.east) + (\OTX,0)$) {$B_{2}$};
+\node [draw] (transaction21) at ($(block2.east) + (\INX, 0)$) {$PR_1^{v_1}$};
+\node [fit=(block2)(transaction21), draw] (box2) {};
+
+\node [] (block3) at ($(box2.east) + (\INX, 0)$) {..};
+\node [fit=(block3)] (box3) {};
+
+\node [align=left, minimum height=4ex] (block4) at ($(box3.east) + (\INX, 0)$) {$B_i$};
+\node [draw] (transactioni1) at ($(block4.east) + (\INX, 0)$) {$PR_1^{v_2}$};
+\node [draw] (transactioni2) at ($(transactioni1.east) + (\INX, 0)$) {$PR_2^{v_1}$};
+\node [fit=(block4)(transactioni1)(transactioni2), draw] (box4) {};
+
+\node [align=center] (block5) at ($(box4.east) + (\OTX, 0)$) {$B_{i+1}$};
+\node [fit=(block5), draw] (box5) {};
+
+\node [] (block6) at ($(box5.east) + (0.8, 0)$) {..};
+\node [fit=(block6)] (box6) {};
+
+\node [align=left] (footnote) at ($(box3.south) + (0, -\OTY)$) {$PR_m^{v_n}$: Protocol Representation with type $m$ and version $n$.};
+
+\draw [->] (box1.east) -- (box2.west);
+\draw [->] (box2.east) -- (box3.west);
+\draw [->] (box3.east) -- (box4.west);
+\draw [->] (box4.east) -- (box5.west);
+\draw [->] (box5.east) -- (box6.west);
+
+\node[fit=(start)(box1)(box2)(box3)(box4)(box5)(box6)(footnote), dash pattern=on5pt off3pt, draw] (halftop) {};
+
+\end{tikzpicture}
+
+协议表示管理模块负责协议的解析以及协议表示的版本管理。
+协议表示管理模块会解析每一个区块中的交易，当发现交易类型为协议时，进一步解析交易中的数据字段，得到协议源代码以及元数据。
+协议源代码会进一步交由编译器前端进处理，得到协议表示;
+协议表示将交由数据库做持久化操作。
+另一方面，当外部向区块链运行时环境请求某个协议的执行结果时，请求会首先通知到协议表示模块。
+协议表示模块从数据库中拿到对应的协议表示，交由中间表示模块做进一步处理，直到返回协议表示的执行结果。
+最终，完成外部请求的响应。
+
+协议表示数据库和编译器前端配合协议表示管理模块，完成协议源代码的编译和持久化。
+编译器前端从协议表示管理模块接收协议源代码，进行语法解析、验证和错误诊断，并且将协议源代码翻译成协议表示，最后返回。
+协议表示数据库则负责持久化不同类型、不同版本的协议表示数据，协议元数据以及协议表示将以键值对的形式持久化。
+当协议表示管理模块向数据库请求某协议表示时，协议表示本身以及其依赖的协议表示集合将一起返回。
+
+中间表示管理模块接收待执行的协议表示集合（本身及依赖），对协议表示集合进一步解析以适配执行引擎。
+首先，中间表示管理模块会插入处理并发的代码到协议表示集合中；
+接着，协议表示集合被解析成执行引擎的模块（Module）集合，并从模块集合中提取执行的函数入口，交由执行引擎。
+中间表示管理模块具有管理上述信息的功能，对于已经处理过的协议表示集合，可以快速检索模块集合，避免重复解析处理。
+
+执行引擎是对即时编译引擎的封装，接收模块集合以及执行函数入口，执行并返回结果。
+
+\begin{tikzpicture}
+\pgfmathsetmacro{\OTX}{1.0}
+\pgfmathsetmacro{\INX}{0.7}
+\pgfmathsetmacro{\OTY}{2.5}
+\pgfmathsetmacro{\INY}{1.5}
+
+%\node [align=left] (runtime) at ($(box1.south) + (0.75, -\OTY)$) {Runtime Environment};
+\node [align=left] (runtime) at (0, 0) {Runtime Environment};
+
+\node [align=center, minimum height=8ex, minimum width=13ex, draw] (prm) at
+($(runtime.south) + (0, -\INY)$) {PR Manager};
+\draw [->, >=stealth', color=red] ($(prm.north) + (0, \INY/2)$) -- (prm.north)
+node[near start, right] {\footnotesize{transaction payload}};
+\draw [->, >=stealth', color=blue] ($(prm.west) + (-\INX, 0)$) -- (prm.west)
+node[near start, above] {\footnotesize{name version}};
+
+\node [cylinder, shape border rotate=90, aspect=0.4, minimum height=9ex, draw] (database) at
+($(prm.south) + (0, -\INY*5/4)$) {Database};
+\draw [->, >=stealth', color=red] ($(prm.south) + (-\INX/2, 0)$) --
+($(database.north) + (-\INX/2, 0)$) node[near start, left] {\footnotesize{dump}};
+\draw [->, >=stealth', color=blue] ($(database.north) + (\INX/2, 0)$) --
+($(prm.south) + (\INX/2, 0)$) node[near start, right] {\footnotesize{load}};
+
+\node [align=left] (jd) at ($(prm.east) + (\OTX*3, \INY*4/5)$) {JIT Driver};
+\node [align=center, minimum height=6ex, minimum width=17ex, draw] (cf) at
+($(jd.south) + (\INX*3, -\INY/2)$) {Compiler Frontend};
+\draw [->, >=stealth', color=red] ($(cf.east) + (0, \INY/4)$) node[right]
+{\footnotesize{compile src}} to [out=5,
+in=355]($(cf.east) + (0, -\INY/4)$);
+
+\node [align=center, minimum height=6ex, minimum width=17ex, draw] (irm) at
+($(jd.south) + (\INX, -\INY*8/5)$) {IR Manager};
+\node [align=center, minimum height=6ex, minimum width=17ex, draw] (je) at
+($(irm.south) + (\INX*5, -\INY*2/3)$) {JIT Engine};
+\draw [->, >=stealth', color=blue] (irm.south) -- (irm.south |- je.west)
+-- (je.west) node[near start, above] {\footnotesize{module, func\_name}};
+\draw [->, >=stealth', color=blue] (je.north) -- (je.north |- irm.east) --
+(irm.east) node[near start, above] {\footnotesize{execute result}};
+
+\draw [->, >=stealth', color=red] ($(prm.east) + (0, 0.35)$) -- ($(cf.west) +
+(0, \INY/7)$) node[near start, above] {\footnotesize{source code}};
+\draw [->, >=stealth', color=red] ($(cf.west) + (0, -\INY/7)$) -- ($(prm.east)
++ (0, -0.08)$) node[near start, below] {\footnotesize{IR}};
+\draw [->, >=stealth', color=blue] ($(prm.east) + (0, -0.4)$) -- ($(irm.west) +
+(0, \INY/7)$) node[near start, above] {\footnotesize{IRs}};
+\draw [->, >=stealth', color=blue] ($(irm.west) + (0, -\INY/7)$) --
+($(prm.south) + (1, 0)$) node[near start, below] {\footnotesize{return}};
+
+\node [] (rightbottom1) at ($(je.east) + (0.1, -0.1)$) {};
+\node [fit=(jd)(cf)(irm)(je)(rightbottom1), dash pattern=on5pt off3pt, draw] (box9) {};
+
+\node [] (rightbottom2) at ($(rightbottom1.east) + (0.1, -0.1)$) {};
+\node[fit=(runtime)(prm)(database)(box9)(rightbottom2), dash pattern=on5pt off3pt, draw] (halfbottom) {};
+
+%\draw [<->] ($(halftop.south) + (-2.98, \INY/2)$) -- ($(halfbottom.north) + (0, -\INY/2)$);
+%\draw [<->] ($(halftop.south) + (-2.48, \INY/2)$) -- ($(halfbottom.north) +
+%(0.5, -\INY/2)$);
+
+\end{tikzpicture}
+
