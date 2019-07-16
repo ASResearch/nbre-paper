@@ -70,12 +70,25 @@
 
 %%
 %% end of the preamble, start of the body of the document source.
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{positioning}
+\usetikzlibrary{fit}
+\usetikzlibrary{snakes}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shapes,arrows,chains}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning, fit}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{intersections}
+
 \begin{document}
 
 %%
 %% The "title" command has an optional parameter,
 %% allowing the author to define a "short title" to be used in page headers.
-\title{The Name of the Title is Hope}
+\title{Blockchain Runtime Environment: An Accompanying System for Upgrading Blockchain}
 
 %%
 %% The "author" command and its associated commands are used to define
@@ -221,7 +234,7 @@
 %% information and builds the first part of the formatted document.
 \maketitle
 
-\section{Introduction}
+\section{INTRODUCTION}
 ACM's consolidated article template, introduced in 2017, provides a
 consistent \LaTeX\ style for use across ACM publications, and
 incorporates accessibility and metadata-extraction functionality
@@ -239,7 +252,7 @@ for any ACM publication --- conference or journal, and for any stage
 of publication, from review to final ``camera-ready'' copy, to the
 author's own version, with {\itshape very} few changes to the source.
 
-\section{Template Overview}
+\section{BACKGROUND}
 As noted in the introduction, the ``\verb|acmart|'' document class can
 be used to prepare many different kinds of documentation --- a
 double-blind initial submission of a full-length technical paper, a
@@ -266,9 +279,9 @@ brackets and is a part of the {\verb|documentclass|} command:
 Journals use one of three template styles. All but three ACM journals
 use the {\verb|acmsmall|} template style:
 \begin{itemize}
-\item {\verb|acmsmall|}: The default journal template style.
-\item {\verb|acmlarge|}: Used by JOCCH and TAP.
-\item {\verb|acmtog|}: Used by TOG.
+\item  The default journal template style.
+\item  Used by JOCCH and TAP.
+\item  Used by TOG.
 \end{itemize}
 
 The majority of conference proceedings documentation will use the {\verb|acmconf|} template style.
@@ -303,15 +316,64 @@ source file:
 \documentclass[sigplan,screen]{acmart}
 \end{verbatim}
 
-\section{Modifications}
+\section{ARCHITECTURE}
+In this section, we first define blockchain protocol and version, and describe
+blockchain abstraction based on the definition. We then introduce Blockchain
+Runtime Environment architecture, system components and working flow included.
 
-Modifying the template --- including but not limited to: adjusting
-margins, typeface sizes, line spacing, paragraph and list definitions,
-and the use of the \verb|\vspace| command to manually adjust the
-vertical spacing between elements of your work --- is not allowed.
+\subsection{System Overview}
+Blockchain Runtime Environment (BRE) is an accompanying system for upgrading,
+both permissionless and permissioned, blockchain. Generally, BRE is not
+going to run independently, but will interact with blockchain when manipulating
+upgrading or provide service when receiving blockchain requests.
 
-{\bfseries Your document will be returned to you for revision if
-  modifications are discovered.}
+Upgrading blockchain, actually, is upgrading blockchain protocol. Specifically,
+blockchain protocol is the parameters that blockchain holds, including block
+generation rate, block size, transaction fees and et al. To be
+more broadly, any line of code in blockchain system is blockchain protocol.
+Blockchain upgrading happens when blockchain system meets serious problem,
+which results in bug fix in an emergency; or when new features launches,
+leading to functions developing correspondingly. Both of these situations
+are blockchain upgrading, and moreover, introducing blockchain system code
+upgrading (optimizing and revising), which explains blockchain protocol is
+blockchain system code itself.
+
+However, it should be noted that the application layer (based on blockchain)
+upgrading is not blockchain upgrading. Smart contract upgrading for
+example, is outside blockchain upgrading scope.
+
+Blockchain protocol version, which also represents as blockchain system
+version, increases after blockchain protocol enforcing upgrade. For traditional
+software upgrade, only the lastest version of the system needs to be
+maintained, and backward compatible is made when the latest is
+released. It barely cares about the historical versions of the system. But in
+contrast, blockchain system needs to retain all historical protocols and its
+versions. If not, transactions validation may fail when the absent of specific
+version of protocol, because data consistency is strictly required for
+blockchain system.
+
+In view of above-mentioned description, blockchain peer, blockchain protocol
+and blockchan peer state is as follows:
+\begin{itemize}
+  \item $n_i$ is blockchain peer with identity $i=1,2,...$
+  \item $p_j$ is blockchain protocol with version $j=1,2,...$
+  \item $S_{m}^{j}=\{p_1,p_2,..,p_j,..,p_m\}$ is blockchain peer state, where
+    the peer holds a set of $m$ kinds of historical protocols, and the peer
+    is running with protocol $p_j$ currently.
+\end{itemize}
+
+Thus, we further abstract blockchain system along with blockchain peer state.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{pdfs/fig1.pdf}
+  \caption{Blockchain System Abstraction}
+\end{figure}
+
+\subsection{Parse Phase}
+\subsection{Compilation Phase}
+\subsection{Upgrade Phase}
+\subsection{Execution Phase}
 
 \section{Typefaces}
 

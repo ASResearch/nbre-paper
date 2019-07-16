@@ -1,0 +1,56 @@
+\begin{tikzpicture}
+
+\pgfmathsetmacro{\OTX}{2.5}
+\pgfmathsetmacro{\INY}{0.3}
+\pgfmathsetmacro{\OTY}{3}
+
+\tikzset{
+  chainnode/.style={align=center, minimum height=6ex, minimum width=8ex, draw},
+}
+
+\node [] (start) at (0, 0) {};
+\node [chainnode] (n1) at ($(start.east) + (\OTX, 0)$) {$S_{3}^{3}$};
+\node [] at ($(n1.north) + (0, \INY)$) {$n_1$};
+
+\node [chainnode] (n2) at ($(n1.east) + (\OTX, 0)$) {$S_{3}^{3}$};
+\node [] at ($(n2.north) + (0, \INY)$) {$n_2$};
+
+\node [chainnode] (n3) at ($(n2.east) + (\OTX, 0)$) {$S_{1}^{1}$};
+\node [] at ($(n3.north) + (0, \INY)$) {$n_3$};
+
+\node [chainnode] (n4) at ($(n1) + (\OTX/2+\INY, -\OTY)$) {$S_{2}^{2}$};
+\node [] at ($(n4.north) + (0, \INY)$) {$n_4$};
+
+\node [chainnode] (n5) at ($(n2) + (\OTX/2+\INY, -\OTY)$) {$S_{3}^{3}$};
+\node [] at ($(n5.north) + (0, \INY)$) {$n_5$};
+
+\node [chainnode] (n6) at ($(n1) + (0, -\OTY*2)$) {$S_{3}^{1}$};
+\node [] at ($(n6.north) + (0, \INY)$) {$n_6$};
+
+\node [chainnode] (n7) at ($(n6.east) + (\OTX, 0)$) {$S_{3}^{3}$};
+\node [] at ($(n7.north) + (0, \INY)$) {$n_7$};
+
+\node [chainnode] (n8) at ($(n7.east) + (\OTX, 0)$) {$S_{3}^{2}$};
+\node [] at ($(n8.north) + (0, \INY)$) {$n_8$};
+
+\draw [-] (n1.east) -- (n2.west);
+\draw [-] (n2.east) -- (n3.west);
+\draw [-] (n4.east) -- (n5.west);
+\draw [-] (n6.east) -- (n7.west);
+\draw [-] (n7.east) -- (n8.west);
+
+\draw [-] ($(n1.south) + (-\INY, 0)$) -- ($(n6.north) + (-\INY, 0)$);
+\draw [-] ($(n3.south) + (\INY, 0)$) -- ($(n8.north) + (\INY, 0)$);
+
+\draw [-] ($(n1.south) + (\INY, 0)$) -- ($(n4.north) + (-\INY, 0)$);
+\draw [-] ($(n6.north) + (\INY, 0)$) -- ($(n4.south) + (-\INY, 0)$);
+\draw [-] ($(n2.south) + (-\INY, 0)$) -- ($(n4.north) + (\INY, 0)$);
+\draw [-] ($(n7.north) + (-\INY, 0)$) -- ($(n4.south) + (\INY, 0)$);
+
+\draw [-] ($(n2.south) + (\INY, 0)$) -- ($(n5.north) + (-\INY, 0)$);
+\draw [-] ($(n7.north) + (\INY, 0)$) -- ($(n5.south) + (-\INY, 0)$);
+\draw [-] ($(n3.south) + (-\INY, 0)$) -- ($(n5.north) + (\INY, 0)$);
+\draw [-] ($(n8.north) + (-\INY, 0)$) -- ($(n5.south) + (\INY, 0)$);
+
+\end{tikzpicture}
+

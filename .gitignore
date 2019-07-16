@@ -3,6 +3,11 @@ en/sample-sigplan.pdf
 en/*.log
 en/*.aux
 en/*.out
+en/*.bbl
+en/*.blg
+
+en/targets/*
+en/pdfs/*
 
 ch/*.aux
 ch/*.bbl

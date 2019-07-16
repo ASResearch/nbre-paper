@@ -1,0 +1,25 @@
+\documentclass[border=1mm, preview]{standalone}
+
+\def\StandaloneMode{}
+
+\pagestyle{empty}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{positioning}
+\usetikzlibrary{fit}
+\usetikzlibrary{snakes}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shapes,arrows,chains}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning, fit}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{intersections}
+
+\begin{document}
+\graphicspath{{figures/}}
+
+{{TEX_HERE}}
+
+\end{document}
