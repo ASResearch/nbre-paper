@@ -139,7 +139,7 @@ def  build_pdf_for_target(target):
     cmd = 'cd targets && xelatex ' + target + ' && cd ..'
     os.system(cmd)
 
-def mv_pdf_files(target):
+def mv_pdf_files():
     cmd = 'cp targets/*.pdf pdfs/'
     os.system(cmd)
 
@@ -147,20 +147,11 @@ def do_for_all_fig_files():
     ts = gen_all_targets()
     for t in ts:
         build_pdf_for_target(t)
+    mv_pdf_files()
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description='Generate pdf for file',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('file', help='')
-    args = parser.parse_args()
-    filename = args.file
-
-    fp = os.path.join(figs_dir, filename)
-    fp = gen_standalone_for_tex(fp)
-    build_pdf_for_target(fp)
-    mv_pdf_files(fp)
+    do_for_all_fig_files()
 
 
 

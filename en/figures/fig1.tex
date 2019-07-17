@@ -1,11 +1,11 @@
 \begin{tikzpicture}
 
-\pgfmathsetmacro{\OTX}{2.5}
+\pgfmathsetmacro{\OTX}{1.2}
 \pgfmathsetmacro{\INY}{0.3}
-\pgfmathsetmacro{\OTY}{3}
+\pgfmathsetmacro{\OTY}{1.8}
 
 \tikzset{
-  chainnode/.style={align=center, minimum height=6ex, minimum width=8ex, draw},
+  chainnode/.style={align=center, minimum height=5ex, minimum width=7ex, draw},
 }
 
 \node [] (start) at (0, 0) {};
@@ -29,6 +29,7 @@
 
 \node [chainnode] (n7) at ($(n6.east) + (\OTX, 0)$) {$S_{3}^{3}$};
 \node [] at ($(n7.north) + (0, \INY)$) {$n_7$};
+\node [] at ($(n7.south) + (0, -\INY*2)$) {a)};
 
 \node [chainnode] (n8) at ($(n7.east) + (\OTX, 0)$) {$S_{3}^{2}$};
 \node [] at ($(n8.north) + (0, \INY)$) {$n_8$};
@@ -51,6 +52,51 @@
 \draw [-] ($(n7.north) + (\INY, 0)$) -- ($(n5.south) + (-\INY, 0)$);
 \draw [-] ($(n3.south) + (-\INY, 0)$) -- ($(n5.north) + (\INY, 0)$);
 \draw [-] ($(n8.north) + (-\INY, 0)$) -- ($(n5.south) + (\INY, 0)$);
+
+
+\node [chainnode] (n11) at ($(n3.east) + (\OTY, 0)$) {\textcolor{red}{$S_{4}^{4}$}};
+\node [] at ($(n11.north) + (0, \INY)$) {$n_1$};
+
+\node [chainnode] (n12) at ($(n11.east) + (\OTX, 0)$) {\textcolor{red}{$S_{4}^{4}$}};
+\node [] at ($(n12.north) + (0, \INY)$) {$n_2$};
+
+\node [chainnode] (n13) at ($(n12.east) + (\OTX, 0)$) {$S_{1}^{1}$};
+\node [] at ($(n13.north) + (0, \INY)$) {$n_3$};
+
+\node [chainnode] (n14) at ($(n11) + (\OTX/2+\INY, -\OTY)$) {$S_{2}^{2}$};
+\node [] at ($(n14.north) + (0, \INY)$) {$n_4$};
+
+\node [chainnode] (n15) at ($(n12) + (\OTX/2+\INY, -\OTY)$) {\textcolor{red}{$S_{4}^{4}$}};
+\node [] at ($(n15.north) + (0, \INY)$) {$n_5$};
+
+\node [chainnode] (n16) at ($(n11) + (0, -\OTY*2)$) {\textcolor{red}{$S_{4}^{1}$}};
+\node [] at ($(n16.north) + (0, \INY)$) {$n_6$};
+
+\node [chainnode] (n17) at ($(n16.east) + (\OTX, 0)$) {\textcolor{red}{$S_{4}^{4}$}};
+\node [] at ($(n17.north) + (0, \INY)$) {$n_7$};
+\node [] at ($(n17.south) + (0, -\INY*2)$) {b)};
+
+\node [chainnode] (n18) at ($(n17.east) + (\OTX, 0)$) {\textcolor{red}{$S_{4}^{2}$}};
+\node [] at ($(n18.north) + (0, \INY)$) {$n_8$};
+
+\draw [-] (n11.east) -- (n12.west);
+\draw [-] (n12.east) -- (n13.west);
+\draw [-] (n14.east) -- (n15.west);
+\draw [-] (n16.east) -- (n17.west);
+\draw [-] (n17.east) -- (n18.west);
+
+\draw [-] ($(n11.south) + (-\INY, 0)$) -- ($(n16.north) + (-\INY, 0)$);
+\draw [-] ($(n13.south) + (\INY, 0)$) -- ($(n18.north) + (\INY, 0)$);
+
+\draw [-] ($(n11.south) + (\INY, 0)$) -- ($(n14.north) + (-\INY, 0)$);
+\draw [-] ($(n16.north) + (\INY, 0)$) -- ($(n14.south) + (-\INY, 0)$);
+\draw [-] ($(n12.south) + (-\INY, 0)$) -- ($(n14.north) + (\INY, 0)$);
+\draw [-] ($(n17.north) + (-\INY, 0)$) -- ($(n14.south) + (\INY, 0)$);
+
+\draw [-] ($(n12.south) + (\INY, 0)$) -- ($(n15.north) + (-\INY, 0)$);
+\draw [-] ($(n17.north) + (\INY, 0)$) -- ($(n15.south) + (-\INY, 0)$);
+\draw [-] ($(n13.south) + (-\INY, 0)$) -- ($(n15.north) + (\INY, 0)$);
+\draw [-] ($(n18.north) + (-\INY, 0)$) -- ($(n15.south) + (\INY, 0)$);
 
 \end{tikzpicture}
 

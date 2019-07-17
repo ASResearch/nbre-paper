@@ -1,0 +1,60 @@
+\begin{tikzpicture}
+\pgfmathsetmacro{\OTX}{1.0}
+\pgfmathsetmacro{\INX}{0.7}
+\pgfmathsetmacro{\OTY}{2.5}
+\pgfmathsetmacro{\INY}{1.5}
+
+%\node [align=left] (runtime) at ($(box1.south) + (0.75, -\OTY)$) {Runtime Environment};
+\node [align=left] (runtime) at (0, 0) {Runtime Environment};
+
+\node [align=center, minimum height=8ex, minimum width=13ex, draw] (prm) at
+($(runtime.south) + (0, -\INY)$) {PR Manager};
+\draw [->, >=stealth', color=red] ($(prm.north) + (0, \INY/2)$) -- (prm.north)
+node[near start, right] {\footnotesize{transaction payload}};
+\draw [->, >=stealth', color=blue] ($(prm.west) + (-\INX, 0)$) -- (prm.west)
+node[near start, above] {\footnotesize{name version}};
+
+\node [cylinder, shape border rotate=90, aspect=0.4, minimum height=9ex, draw] (database) at
+($(prm.south) + (0, -\INY*5/4)$) {Database};
+\draw [->, >=stealth', color=red] ($(prm.south) + (-\INX/2, 0)$) --
+($(database.north) + (-\INX/2, 0)$) node[near start, left] {\footnotesize{dump}};
+\draw [->, >=stealth', color=blue] ($(database.north) + (\INX/2, 0)$) --
+($(prm.south) + (\INX/2, 0)$) node[near start, right] {\footnotesize{load}};
+
+\node [align=left] (jd) at ($(prm.east) + (\OTX*3, \INY*4/5)$) {JIT Driver};
+\node [align=center, minimum height=6ex, minimum width=17ex, draw] (cf) at
+($(jd.south) + (\INX*3, -\INY/2)$) {Compiler Frontend};
+\draw [->, >=stealth', color=red] ($(cf.east) + (0, \INY/4)$) node[right]
+{\footnotesize{compile src}} to [out=5,
+in=355]($(cf.east) + (0, -\INY/4)$);
+
+\node [align=center, minimum height=6ex, minimum width=17ex, draw] (irm) at
+($(jd.south) + (\INX, -\INY*8/5)$) {IR Manager};
+\node [align=center, minimum height=6ex, minimum width=17ex, draw] (je) at
+($(irm.south) + (\INX*5, -\INY*2/3)$) {JIT Engine};
+\draw [->, >=stealth', color=blue] (irm.south) -- (irm.south |- je.west)
+-- (je.west) node[near start, above] {\footnotesize{module, func\_name}};
+\draw [->, >=stealth', color=blue] (je.north) -- (je.north |- irm.east) --
+(irm.east) node[near start, above] {\footnotesize{execute result}};
+
+\draw [->, >=stealth', color=red] ($(prm.east) + (0, 0.35)$) -- ($(cf.west) +
+(0, \INY/7)$) node[near start, above] {\footnotesize{source code}};
+\draw [->, >=stealth', color=red] ($(cf.west) + (0, -\INY/7)$) -- ($(prm.east)
++ (0, -0.08)$) node[near start, below] {\footnotesize{IR}};
+\draw [->, >=stealth', color=blue] ($(prm.east) + (0, -0.4)$) -- ($(irm.west) +
+(0, \INY/7)$) node[near start, above] {\footnotesize{IRs}};
+\draw [->, >=stealth', color=blue] ($(irm.west) + (0, -\INY/7)$) --
+($(prm.south) + (1, 0)$) node[near start, below] {\footnotesize{return}};
+
+\node [] (rightbottom1) at ($(je.east) + (0.1, -0.1)$) {};
+\node [fit=(jd)(cf)(irm)(je)(rightbottom1), dash pattern=on5pt off3pt, draw] (box9) {};
+
+\node [] (rightbottom2) at ($(rightbottom1.east) + (0.1, -0.1)$) {};
+\node[fit=(runtime)(prm)(database)(box9)(rightbottom2), dash pattern=on5pt off3pt, draw] (halfbottom) {};
+
+%\draw [<->] ($(halftop.south) + (-2.98, \INY/2)$) -- ($(halfbottom.north) + (0, -\INY/2)$);
+%\draw [<->] ($(halftop.south) + (-2.48, \INY/2)$) -- ($(halfbottom.north) +
+%(0.5, -\INY/2)$);
+
+\end{tikzpicture}
+
