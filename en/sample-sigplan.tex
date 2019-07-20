@@ -308,7 +308,7 @@ $n_4$; 2) Node received external request, and is running a specific assigned
 protocol, like $n_6$ and $n_8$.
 
 As soon as new protocol $p_4$ is deployed to blockchain system,
-$p_4$ will be broadcasted to all nodes. After all, nodes with having-LIB
+$p_4$ will be broadcast to all nodes. After all, nodes with having-LIB
 will receive $p_4$. Finally, nodes will add $p_4$ to their protocol set, start
 running $p_4$, and update their default state to $S_4^4$, as Fig. 1-b) says.
 
@@ -325,7 +325,7 @@ architecture:
     blockchain system, implements some requirements or functions; Furthermore,
     protocol as a part of the underlying libraries, provides blockchain services.
     In a word, protocol actually is blockchain system code. On the other hand,
-    protocol needs to be deployed to the blockchain system and broadcasted to
+    protocol needs to be deployed to the blockchain system and broadcast to
     other nodes. Fortunately, blockchain's sending transaction property meets
     the need of protocol deployment and broadcasting. So, consider of packing
     protocol (source code) into transaction payload, and deploy it by just
@@ -339,12 +339,30 @@ architecture:
     block tranaction and collected, and then saved persistently. For responsing
     the request, it needs to retrive the protocol that matches the query
     condition efficiently for further execution.
-  \item Protocol execution.
+  \item Protocol execution. Generally, protocol execution proceeds right after external
+    request arrives. As mentioned above, protocol actually is source code, and
+    source code representation executable if it can be executed directly as in
+    machine code, or indirectly using a interpreter. Unfortunately, protocol
+    entity, coming from transaction payload parse and collection, is not
+    representation executable: protocol is high-level language, and a
+    high-level language finally become executable until compilation procedure
+    (preprocess, compile, assemble and link) done; The same to its
+    dependencies. But if manipulating compilation procedure each time when
+    request arrives seems impractical, which will affect the efficiency of
+    execution, lead to disastrous results for performance.
+
+    Just-In-Time technology is the answer of protocol-execution problem. If
+    protocol entity is not source code anymore, but a translated language
+    representation called protocol representation that could be executed
+    indirectly by JIT interpreter. There will be no compilation procedure when
+    executing protocol representation but check variables and functions in
+    symbol table and interprete dynamically. Thus involve translation from
+    protocol to protocol representation when parsing transaction payload for
+    real protocol entity.
 \end{itemize}
 
 
 \subsection{Parse Phase}
-\subsection{Compilation Phase}
 \subsection{Upgrade Phase}
 \subsection{Execution Phase}
 
