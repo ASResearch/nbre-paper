@@ -18,3 +18,5 @@ ch/main.pdf
 ch/*.dvi
 ch/*.ps
 ch/*.toc
+
+.DS_Store

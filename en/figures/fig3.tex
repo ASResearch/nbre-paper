@@ -1,6 +1,6 @@
 \begin{tikzpicture}
-\pgfmathsetmacro{\OTX}{1.0}
-\pgfmathsetmacro{\INX}{0.7}
+\pgfmathsetmacro{\OTX}{0.9}
+\pgfmathsetmacro{\INX}{0.6}
 \pgfmathsetmacro{\OTY}{2.5}
 \pgfmathsetmacro{\INY}{1.5}
 
@@ -23,7 +23,7 @@ node[near start, above] {\footnotesize{name version}};
 
 \node [align=left] (jd) at ($(prm.east) + (\OTX*3, \INY*4/5)$) {JIT Driver};
 \node [align=center, minimum height=6ex, minimum width=17ex, draw] (cf) at
-($(jd.south) + (\INX*3, -\INY/2)$) {Compiler Frontend};
+($(jd.south) + (\INX*3, -\INY/15*8)$) {Compiler Frontend};
 \draw [->, >=stealth', color=red] ($(cf.east) + (0, \INY/4)$) node[right]
 {\footnotesize{compile src}} to [out=5,
 in=355]($(cf.east) + (0, -\INY/4)$);
@@ -42,7 +42,7 @@ in=355]($(cf.east) + (0, -\INY/4)$);
 \draw [->, >=stealth', color=red] ($(cf.west) + (0, -\INY/7)$) -- ($(prm.east)
 + (0, -0.08)$) node[near start, below] {\footnotesize{IR}};
 \draw [->, >=stealth', color=blue] ($(prm.east) + (0, -0.4)$) -- ($(irm.west) +
-(0, \INY/7)$) node[near start, above] {\footnotesize{IRs}};
+(0, 0.09)$) node[near start, above] {\footnotesize{IRs}};
 \draw [->, >=stealth', color=blue] ($(irm.west) + (0, -\INY/7)$) --
 ($(prm.south) + (1, 0)$) node[near start, below] {\footnotesize{return}};
 
