@@ -361,10 +361,37 @@ architecture:
     real protocol entity.
 \end{itemize}
 
+Blockchain Runtime Environment architecture consists of components (see in Fig.
+2) including:
+\begin{itemize}
+  \item \textit{Protocol representation manager}
+  \item \textit{Protocol representation database}
+  \item \textit{Compiler frontend}
+  \item \textit{Intermediate representation module manager}
+  \item \textit{Just-In-Time engine}
+\end{itemize}
 
-\subsection{Parse Phase}
-\subsection{Upgrade Phase}
-\subsection{Execution Phase}
+\begin{figure}
+  \includegraphics[width=\linewidth,trim={0 0 .8cm 0},clip]{pdfs/fig2.pdf}
+  \caption{Blockchain Runtime Environment architecture}
+\end{figure}
+
+The function of these components along with protocol deployment, upgrade and
+execution procedure will be illustrated in the next three sections.
+
+\subsection{Protocol Deployment}
+
+\begin{figure}
+  \includegraphics[width=\linewidth,trim={0 0 2.2cm 0},clip]{pdfs/fig3.pdf}
+  \caption{Protocol deployment in transaction payload}
+\end{figure}
+
+
+
+\textit{Discussion on design choices.}
+
+\subsection{Protocol Upgrade}
+\subsection{Protocol Execution}
 
 %\section{Tables}
 

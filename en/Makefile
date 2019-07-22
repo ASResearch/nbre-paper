@@ -3,7 +3,7 @@ TEX = $(wildcard *.tex)
 
 .PHONY: all clean
 
-$(PAPER).pdf: $(TEX)
+all: $(TEX)
 	pdflatex $(PAPER)
 
 clean:
