@@ -386,12 +386,46 @@ execution procedure will be illustrated in the next three sections.
   \caption{Protocol deployment in transaction payload}
 \end{figure}
 
+Fig. 3 shows that blockchain system in a logical-level way. Blocks are linked
+one by another, because of child block holding its parent block hash. In a
+block, transactions are deterministic in specific order. For each transaction,
+it has transaction meta data (source, target, value, type, et al.) and
+transaction payload. Usually, transaction payload is empty for transfer
+transaction, but argument or smart contract content for smart contract call
+or deployment transaction respectively.
+The protocol for blockchain upgrading comes from transaction payload
+(Sec. 3.1). Specifically, protocol, actually high-level source
+code, and its meta data (protocol name, protocol version and its dependencies'
+meta data) will be organized and packed into transaction payload field.
+There will be a new type of transaction named \textit{protocol} since no such
+transaction type for upgrading.
+Only one version of protocol is allowed in one transaction, but not limit the
+number of protocols in one block. Finally, the committee signatures
+\textit{protocol} transaction and broadcasts it.
 
+\textit{Discussion on design choices.} The way of protocol deployment takes use
+of blockchain transacton's feature: carrying information and spreading to all
+nodes. Deploying protocol by sending transaction with protocol in it instead of
+active downloading from centralized server seems more reasonable in blockchain
+world. On the other hand, unlike traditional distributed system or permissioned
+blockchain, who have an identity, nodes are free to join in or leave in
+permissionless blockchain, thus makes it impossible to determine the set of
+upgrading nodes in advance.
 
-\textit{Discussion on design choices.}
+It's very similar to smart contract
+deployment, call and execution phase when compared with protocol upgrading
+procedure. Is it possible to manipulate blockchain upgrading by smart contract
+regardless of protocol? The answer is definitely yes, in some conditions. Smart
+contract is limited by on-chain data interaction, time execution and authority.
+Smart contract has access to on-chain data only if corresponding interface has
+been defined, while protocol is free to invoke any functions of BRE. Besides,
+
 
 \subsection{Protocol Upgrade}
+\textit{Discussion on design choices.}
+
 \subsection{Protocol Execution}
+\textit{Discussion on design choices.}
 
 %\section{Tables}
 

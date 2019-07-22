@@ -12,6 +12,7 @@
 
 \node [align=left, minimum height=4ex] (block2) at ($(box1.east) + (\OTX,0)$) {$B_{2}$};
 \node [draw] (transaction21) at ($(block2.east) + (\INX/2, 0)$) {$p_1$};
+\node [] (tx21) at ($(transaction21.north) + (0, \OTY/5)$) {$tx$};
 \node [fit=(block2)(transaction21), draw] (box2) {};
 
 \node [] (block3) at ($(box2.east) + (\INX, 0)$) {..};
@@ -19,7 +20,9 @@
 
 \node [align=left, minimum height=4ex] (block4) at ($(box3.east) + (\INX, 0)$) {$B_i$};
 \node [draw] (transactioni1) at ($(block4.east) + (\INX/2, 0)$) {$p_2$};
+\node [] (txi1) at ($(transactioni1.north) + (0, \OTY/5)$) {$tx$};
 \node [draw] (transactioni2) at ($(transactioni1.east) + (\INX/2, 0)$) {$p_3$};
+\node [] (txi2) at ($(transactioni2.north) + (0, \OTY/5)$) {$tx$};
 \node [fit=(block4)(transactioni1)(transactioni2), draw] (box4) {};
 
 \node [align=center] (block5) at ($(box4.east) + (\OTX, 0)$) {$B_{i+1}$};
