@@ -165,7 +165,7 @@
 %% other information printed in the page headers. This command allows
 %% the author to define a more concise list
 %% of authors' names for this purpose.
-\renewcommand{\shortauthors}{Trovato and Tobin, et al.}
+\renewcommand{\shortauthors}{}
 
 %%
 %% The abstract is a short summary of the work to be presented in the
@@ -397,11 +397,10 @@ The protocol for blockchain upgrading comes from transaction payload
 (Sec. 3.1). Specifically, protocol, actually high-level source
 code, and its meta data (protocol name, protocol version and its dependencies'
 meta data) will be organized and packed into transaction payload field.
-There will be a new type of transaction named \textit{protocol} since no such
-transaction type for upgrading.
-Only one version of protocol is allowed in one transaction, but not limit the
-number of protocols in one block. Finally, the committee signatures
-\textit{protocol} transaction and broadcasts it.
+Only one version of protocol is allowed in one transaction. The committee
+signatures \textit{protocol} transaction and broadcasts it. Finally, protocol
+is successfully deployed when nodes receive the transaction and validate it in
+the end.
 
 \textit{Discussion on design choices.} The way of protocol deployment takes use
 of blockchain transacton's feature: carrying information and spreading to all
@@ -412,13 +411,30 @@ blockchain, who have an identity, nodes are free to join in or leave in
 permissionless blockchain, thus makes it impossible to determine the set of
 upgrading nodes in advance.
 
+The committee plays a important role in protocol deployment phase. If only one
+person, instead of the committee, signatures the \textit{protocol} transaction
+and broadcasts it, which makes no different from centralized system deploying
+upgrade software. What's more, \textit{protocol} transaction has the super
+privilege of upgrading underlying blockchain system. It will be unsafe if the
+privilege is in control of someone. The committee way of protocol deployment
+weakens the influence of each one. Anyone who intents to do evil is limited.
+The committee has to come to an agreement before signaturing and deploying the
+transaction.
+
 It's very similar to smart contract
 deployment, call and execution phase when compared with protocol upgrading
 procedure. Is it possible to manipulate blockchain upgrading by smart contract
-regardless of protocol? The answer is definitely yes, in some conditions. Smart
-contract is limited by on-chain data interaction, time execution and authority.
-Smart contract has access to on-chain data only if corresponding interface has
-been defined, while protocol is free to invoke any functions of BRE. Besides,
+regardless of protocol? The answer is definitely yes, in some conditions.
+However, smart contract is limited by authority in aspect of deployment and
+on-chain data interaction. Smart contract is application layer protocol,
+anyone has the right to deploy arbitrary logic of smart contract even
+it behaves malicious. If malicious smart contract has the privilege of
+upgrading blockchain system, it does cause disaster that cannot imagine.
+Smart contract has access to on-chain data only if corresponding
+interface has been defined,
+while protocol is free to invoke any functions of BRE. Besides,
+protocol could even provide Turning Complete services for blockchain system,
+which smart contract would never achieve.
 
 
 \subsection{Protocol Upgrade}
