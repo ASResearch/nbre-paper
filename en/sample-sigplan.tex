@@ -243,7 +243,7 @@ Blockchain Runtime Environment (BRE) is an accompanying system for upgrading,
 both permissionless and permissioned, blockchain. As the name says, BRE
 provides the environment for blockchain running. Generally, BRE is not going to
 run independently, but will interact with blockchain when manipulating
-updating. Specifically, for a blockchain node, which has installed BRE, is
+upgrade. Specifically, for a blockchain node, which has installed BRE, is
 running a blockchain client (or simply client) process and a friend process BRE
 at the same time.
 
@@ -251,16 +251,16 @@ Upgrading blockchain, actually, is upgrading blockchain protocol.
 Blockchain protocol is the parameters that blockchain holds, including block
 generation rate, block size, transaction fees and et al. To be
 more broadly, any line of code in blockchain system is blockchain protocol.
-Blockchain upgrading happens when blockchain system meets serious problem,
+Blockchain upgrade happens when blockchain system meets serious problem,
 which results in bug fix in an emergency; or when new features launches,
 leading to functions developing correspondingly. Both of these situations
-are blockchain upgrading, and moreover, introducing blockchain system code
-upgrading (optimizing and revising), which explains blockchain protocol is
+are blockchain upgrade, at the same time, introduces blockchain system code
+upgrade (optimization and revise), which explains blockchain protocol is
 blockchain system code itself.
 
 However, it should be noted that the application layer (based on blockchain)
-upgrading is not blockchain upgrading. Smart contract upgrading for
-example, is outside blockchain upgrading scope.
+upgrade is not blockchain upgrade. Smart contract upgrade for
+example, is outside blockchain upgrade scope.
 
 Blockchain protocol version, which also represents as blockchain system
 version, increases after blockchain protocol enforcing upgrade. For traditional
@@ -287,7 +287,7 @@ For any node $n_i$ of blockchain, at moment $t$,
 the node state is $S_{m}^{j}$, which means the node holds the set of protocols
 $\{p_1,p_2,..,p_j,..,p_m\}$, and now the node's running protocol is $p_j$.
 Obviously, blockchain nodes' state may differ from each other: the set of
-protocols are originally different or the current running protocols ars aree
+protocols are originally different or the current running protocols are
 different. By default (not receiving requests from client),
 blockchain nodes' state is always $S_{m}^{m}$, namely each node has entire
 historical protocols and runs the lastest protocol, only if last irreversible
@@ -312,10 +312,10 @@ $p_4$ will be broadcast to all nodes. After all, nodes with having-LIB
 will receive $p_4$. Finally, nodes will add $p_4$ to their protocol set, start
 running $p_4$, and update their default state to $S_4^4$, as Fig. 1-b) says.
 
-Most of the clients do not aware of blockchain's upgrading unless the client
-gets BRE response that can identify upgrading event after requesting. Thus the
-hallmark of successful upgrading is that the response that the client gets is
-exactly the protocol running result supposed to be.
+%Most of the clients do not aware of blockchain's upgrade unless the client
+%gets BRE response that can identify upgrade event after requesting. Thus the
+%hallmark of successful upgrade is that the response that the client gets is
+%exactly the protocol running result supposed to be.
 
 Three more need to take into concern when designing and implementing its
 architecture:
@@ -331,7 +331,7 @@ architecture:
     protocol (source code) into transaction payload, and deploy it by just
     sending a special transaction.
   \item Protocol management. Previously, it has stated the fact that blockchain
-    upgrading produces various versions of protocol, resulting in the
+    upgrade produces various versions of protocol, resulting in the
     requirement of protocol version control. Managering newly comming protocol
     and responsing the client's request for specific protocol executing result
     are the main parts of protocol management. For newly comming protocol,
@@ -393,7 +393,7 @@ it has transaction meta data (source, target, value, type, et al.) and
 transaction payload. Usually, transaction payload is empty for transfer
 transaction, but argument or smart contract content for smart contract call
 or deployment transaction respectively.
-The protocol for blockchain upgrading comes from transaction payload
+The protocol for blockchain upgrade comes from transaction payload
 (Sec. 3.1). Specifically, protocol, actually high-level source
 code, and its meta data (protocol name, protocol version and its dependencies'
 meta data) will be organized and packed into transaction payload field.
@@ -405,11 +405,11 @@ the end.
 \textit{Discussion on design choices.} The way of protocol deployment takes use
 of blockchain transacton's feature: carrying information and spreading to all
 nodes. Deploying protocol by sending transaction with protocol in it instead of
-active downloading from centralized server seems more reasonable in blockchain
+active downloading from centralized server is more reasonable in blockchain
 world. On the other hand, unlike traditional distributed system or permissioned
 blockchain, who have an identity, nodes are free to join in or leave in
 permissionless blockchain, thus makes it impossible to determine the set of
-upgrading nodes in advance.
+upgrade nodes in advance.
 
 The committee plays a important role in protocol deployment phase. If only one
 person, instead of the committee, signatures the \textit{protocol} transaction
@@ -438,6 +438,28 @@ which smart contract would never achieve.
 
 
 \subsection{Protocol Upgrade}
+After protocol deployment phase, blockchain system upgrade goes to the next
+protocol upgrade phase. In this phase, BRE's components \textit{protocol
+  representation manager} (PRM), \textit{compiler frontend} (CF) and
+\textit{protocol representation database} (PRD) are involved in. PRM is responsible
+for protocol collection and protocol version management, with the help of CF
+and PRD for protocol compilation and protocol representation persistence
+respectively.
+
+When \textit{protocol} transaction arrives, PRM parses transaction payload, and
+obtains the raw protocol and its meta information just the way they organized.
+Protocol will be sent to CF for further compilation. CF parses protocol,
+checking it for errors, translates protocol
+into low-level protocol representation and then protocol representation returns.
+Finally, protocol representation and its meta data dumps to PRD for persistence
+in forms of key-value pair.
+
+On the other hand, when client sends request (protocol name and version)
+to BRE for the execution result of specific protocol, PRM is firstly informed.
+After that, PRM loads the corresponding protocol representation as well as its
+dependencies from PRD and sends to IRMM for execution and return.
+In the end, PRM responses the result for the request.
+
 \textit{Discussion on design choices.}
 
 \subsection{Protocol Execution}
