@@ -5,7 +5,10 @@ TEX = $(wildcard *.tex)
 
 all: $(TEX)
 	pdflatex $(PAPER)
+	bibtex $(PAPER)
+	pdflatex $(PAPER)
+	pdflatex $(PAPER)
 
 clean:
-	rm -f *.aux *.cut *.log *.out $(PAPER).pdf
+	rm -f *.aux *.cut *.log *.out $(PAPER).pdf *.bbl *.blg
 
