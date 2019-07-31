@@ -218,87 +218,30 @@
 \maketitle
 
 \section{Introduction}
-You may want to display math equations in three distinct styles:
-inline, numbered or non-numbered display.  Each of the three are
-discussed in the next sections.
 
-\subsection{Inline (In-text) Equations}
-A formula that appears in the running text is called an inline or
-in-text formula.  It is produced by the \textbf{math} environment,
-which can be invoked with the usual
-\texttt{{\char'134}begin\,\ldots{\char'134}end} construction or with
-the short form \texttt{\$\,\ldots\$}. You can use any of the symbols
-and structures, from $\alpha$ to $\omega$, available in
-\LaTeX~\cite{Lamport:LaTeX}; this section will simply show a few
-examples of in-text equations in context. Notice how this equation:
-\begin{math}
-  \lim_{n\rightarrow \infty}x=0
-\end{math},
-set here in in-line math style, looks slightly different when
-set in display style.  (See next section).
+Blockchain is a distributed database that each peer holds the entire
+information of the database. The information of each one is a growing list of
+records, called blocks, that are linked using cryptography.
+Each block contains a cryptographic hash of the previous block and transaction
+data \cite{blockchainwikidef}.
+Underlying consensus protocol ensures blockchain peers share the same state.
 
-\subsection{Display Equations}
-A numbered display equation---one set off by vertical space from the
-text and centered horizontally---is produced by the \textbf{equation}
-environment. An unnumbered display equation is produced by the
-\textbf{displaymath} environment.
+Based on the basic concept of blockchain (block, transaction and consensus
+protocol), arguments are proposed because of the different requirements in
+different scenarios of blockchain.
+Or with the development of blockchain technology and deeper thinking of
+blockchain, ideas on blockchain optimization are raised.
+Therefore, it is necessary to update blockchain features, upgrade blockchain as
+well, when newly comming proposal arrives.
 
-Again, in either environment, you can use any of the symbols and
-structures available in \LaTeX\@; this section will just give a couple
-of examples of display equations in context.  First, consider the
-equation, shown as an inline equation above:
-\begin{equation}
-  \lim_{n\rightarrow \infty}x=0
-\end{equation}
-Notice how it is formatted somewhat differently in
-the \textbf{displaymath}
-environment.  Now, we'll enter an unnumbered equation:
-\begin{displaymath}
-  \sum_{i=0}^{\infty} x + 1
-\end{displaymath}
-and follow it with another numbered equation:
-\begin{equation}
-  \sum_{i=0}^{\infty}x_i=\int_{0}^{\pi+2} f
-\end{equation}
-just to demonstrate \LaTeX's able handling of numbering.
-
-The use of \BibTeX\ for the preparation and formatting of one's
-references is strongly recommended. Authors' names should be complete
---- use full first names (``Donald E. Knuth'') not initials
-(``D. E. Knuth'') --- and the salient identifying features of a
-reference should be included: title, year, volume, number, pages,
-article DOI, etc.
-
-The bibliography is included in your source document with these two
-commands, placed just before the \verb|\end{}| command:
-\begin{verbatim}
-  \bibliographystyle{ACM-Reference-Format}
-  \bibliography{bibfile}
-\end{verbatim}
-where ``\verb|bibfile|'' is the name, without the ``\verb|.bib|''
-suffix, of the \BibTeX\ file.
-
-Citations and references are numbered by default. A small number of
-ACM publications have citations and references formatted in the
-``author year'' style; for these exceptions, please include this
-command in the {\bfseries preamble} of your \LaTeX\ source:
-\begin{verbatim}
-  \citestyle{acmauthoryear}
-\end{verbatim}
-
-  Some examples.  A paginated journal article \cite{Abril07}, an
-  enumerated journal article \cite{Cohen07}, a reference to an entire
-  issue \cite{JCohen96}, a monograph (whole book) \cite{Kosiur01}, a
-  monograph/whole book in a series (see 2a in spec. document)
-  \cite{Harel79}, a divisible-book such as an anthology or compilation
-  \cite{Editor00} followed by the same example, however we only output
-  the series if the volume number is given \cite{Editor00a} (so
-  Editor00a's series should NOT be present since it has no vol. no.),
-  a chapter in a divisible book \cite{Spector90}, a chapter in a
-  divisible book in a series \cite{Douglass98}, a multi-volume work as
-  book \cite{Knuth97}, an article in a proceedings (of a conference,
-  symposium, workshop for example) (paginated proceedings article)
-  \cite{Andler79}, a proceedings article with all possible elements
+However, it's not easy to upgrade blockchain, permissionless blockchain in
+particular, peers of which are free to participate or leave without permission,
+because blockchain is decentralized and peers in blockchain are untrusted.
+Unlike traditional upgrade service, there is no such a trusted institution to
+deploy installation packages in blockchain, or there is no centralized peers to
+provide installation packages download service for upgrade in blockchain.
+Even more, peers' behavior in blockchain is arbitrary, one could choose to
+upgrade or keep as it is, making it impossible to enforce peers upgrade.
 
 \section{Background}
 
@@ -310,8 +253,8 @@ Runtime Environment architecture, system components and working flow included.
 
 \subsection{Overview}
 Blockchain Runtime Environment (BRE) is an accompanying system for upgrading,
-both permissionless and permissioned, blockchain. As the name says, BRE
-provides the environment for blockchain running. Generally, BRE is not going to
+both permissionless and permissioned, blockchain.
+Generally, BRE is not going to
 run independently, but will interact with blockchain when manipulating
 upgrade. Specifically, for a blockchain node, which has installed BRE, is
 running a blockchain client (or simply client) process and a friend process BRE
@@ -487,8 +430,8 @@ The committee has to come to an agreement before signaturing and deploying the
 transaction.
 
 It's very similar to smart contract
-deployment, call and execution phase when compared with protocol upgrading
-procedure. Is it possible to manipulate blockchain upgrading by smart contract
+deployment, call and execution phase when compared with protocol upgrade
+procedure. Is it possible to manipulate blockchain upgrade by smart contract
 regardless of protocol? The answer is definitely yes, in some conditions.
 However, smart contract is limited by authority in aspect of deployment and
 on-chain data interaction. Smart contract is application layer protocol,
