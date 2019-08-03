@@ -219,20 +219,41 @@
 
 \section{Introduction}
 
-Blockchain is a distributed database that each peer holds the entire
-information of the database. The information of each one is a growing list of
-records, called blocks, that are linked using cryptography.
-Each block contains a cryptographic hash of the previous block and transaction
-data \cite{blockchainwikidef}.
-Underlying consensus protocol ensures blockchain peers share the same state.
+Blockchain is a distributed database \cite{crosby2016blockchain}
+that each peer holds the entire information of the database.
+The information of each one is a growing list of records, called \textit{blocks},
+that are linked using cryptography \cite{blockchainwikidef}.
+Each block contains a cryptographic hash of the previous block and
+\textit{transactions}.
+Underlying \textit{consensus protocol} \cite{gilad2017algorand,kiayias2017ouroboros,hanke2018dfinity}
+ensures blockchain peers share the same state.
 
 Based on the basic concept of blockchain (block, transaction and consensus
-protocol), arguments are proposed because of the different requirements in
-different scenarios of blockchain.
+protocol), arguments are gradually proposed because of the different
+requirements in different scenarios of blockchain.
 Or with the development of blockchain technology and deeper thinking of
-blockchain, ideas on blockchain optimization are raised.
+blockchain, ideas on blockchain optimization are raised one by one.
+
 Therefore, it is necessary to update blockchain features, upgrade blockchain as
 well, when newly comming proposal arrives.
+
+For traditional centralized system, there are two ways for upgrade
+\cite{softwareupgradewikidef}, offline and online.
+In offline way, software company deploys installation packages to the
+centralized server, after that, client downloads packages actively, and then
+installs packages and upgrades system. In online way, client local version and
+server latest version will be checked, downloading and installing packages if
+client version is not the latest. System upgrade executes passively in online
+way.
+
+For traditional distributed system, like server clusters,
+content distribution networks, peer-to-peer system and sensor networks,
+upgrade includes the step of \cite{ajmani2003scheduling}:
+1) install upgrades at logically centralized
+upgrade server by a trusted party; 2) upgrade server advances the version
+number of system and makes the new upgrade available for download; 3) download
+the upgrade for the new version from upgrade server and be affacted by the
+upgrade.
 
 However, it's not easy to upgrade blockchain, permissionless blockchain in
 particular, peers of which are free to participate or leave without permission,
@@ -241,7 +262,42 @@ Unlike traditional upgrade service, there is no such a trusted institution to
 deploy installation packages in blockchain, or there is no centralized peers to
 provide installation packages download service for upgrade in blockchain.
 Even more, peers' behavior in blockchain is arbitrary, one could choose to
-upgrade or keep as it is, making it impossible to enforce peers upgrade.
+upgrade or keep as it is, making it impossible to enforce all peers upgrade.
+
+When upgrading permissionless blockchain, usually a \textit{soft fork} or a
+\textit{hard fork} is introduced. A soft fork is backward compatible upgrade,
+agreement will be reached eventually even though a temorary fork may caused.
+In contract, a hard fork is a permanent divergence from the previous version of
+blockchain, which is inevitable unless all participants upgrade to the new
+version of blockchain in order to continue verifying and validating new blocks
+of transactions.
+
+A hard fork sometimes brings bad effect to the community.
+In the case of Bitcoin \cite{bitcoin}, controversy still abounds over the block
+size debate among developers, miners and users, ending in the famous hard fork
+of Bitcoin Cash \cite{bitcoincash} out of Bitcoin.
+Moreover, The DAO problem \cite{thedaowikidef} of Ethereum \cite{ethereum}
+gives rise to unintended side effect such as Ethereum and Ethereum Classic
+\cite{ethereumclassic} duplicate assets and division of its community.
+
+Besides, for a digital currency exchange, who has its own peers, it will
+increase the maintainance cost of the exchange and cause unnecessary economic
+losses for blockchain upgrade.
+Blockchain upgrade means the exchange should be informed in
+advance for fetching the latest version of blockchain code, and compiling,
+testing, deploying it. If failed, further steps should be taken with the
+help of blockchain developers. All of these increase the maintainance cost of
+the exchange.
+On the other hand, blockchain upgrade means peers of the exchange may not
+provide service during the period of upgrade, which enables deposition and
+withdrawal operation failed until upgrade finish.
+According to CoinMarketCap \cite{coinmarketcap} historical data of Bitcoin,
+daily average trading volume for year 2018 is around 6 billion USD.
+Assuming that on-chain trading volume is one-tenth of off-chain's (exchange
+internal), and processing fees is 1\textperthousand, it brings about 25,000 USD
+losses a hour because of disable deposition and withdrawal.
+
+In conclusion,
 
 \section{Background}
 
@@ -252,7 +308,7 @@ architecture designing purpose and principle. After that, we introduce Blockchai
 Runtime Environment architecture, system components and working flow included.
 
 \subsection{Overview}
-Blockchain Runtime Environment (BRE) is an accompanying system for upgrading,
+\textit{Blockchain Runtime Environment} (BRE) is an accompanying system for upgrading,
 both permissionless and permissioned, blockchain.
 Generally, BRE is not going to
 run independently, but will interact with blockchain when manipulating
@@ -406,7 +462,7 @@ The protocol for blockchain upgrade comes from transaction payload
 code, and its meta data (protocol name, protocol version and its dependencies'
 meta data) will be organized and packed into transaction payload field.
 Only one version of protocol is allowed in one transaction. The committee
-signatures \textit{protocol} transaction and broadcasts it. Finally, protocol
+signatures protocol transaction and broadcasts it. Finally, protocol
 is successfully deployed when nodes receive the transaction and validate it in
 the end.
 
@@ -420,9 +476,9 @@ permissionless blockchain, thus makes it impossible to determine the set of
 upgrade nodes in advance.
 
 The committee plays a important role in protocol deployment phase. If only one
-person, instead of the committee, signatures the \textit{protocol} transaction
+person, instead of the committee, signatures the protocol transaction
 and broadcasts it, which makes no different from centralized system deploying
-upgrade software. What's more, \textit{protocol} transaction has the super
+upgrade software. What's more, protocol transaction has the super
 privilege of upgrading underlying blockchain system. It will be unsafe if the
 privilege is in control of someone. The committee way of protocol deployment
 weakens the influence of each one. Anyone who intents to do evil is limited.
@@ -454,7 +510,7 @@ for protocol collection and protocol version management, with the help of CF
 and PRD for protocol compilation and protocol representation persistence
 respectively.
 
-When \textit{protocol} transaction arrives, PRM parses transaction payload, and
+When protocol transaction arrives, PRM parses transaction payload, and
 obtains the raw protocol and its meta information just the way they organized.
 Protocol will be sent to CF for further compilation. CF parses protocol,
 checking it for errors, translates protocol
