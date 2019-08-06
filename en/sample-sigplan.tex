@@ -264,8 +264,8 @@ provide installation packages download service for upgrade in blockchain.
 Even more, peers' behavior in blockchain is arbitrary, one could choose to
 upgrade or keep as it is, making it impossible to enforce all peers upgrade.
 
-When upgrading permissionless blockchain, usually a \textit{soft fork} or a
-\textit{hard fork} is introduced. A soft fork is backward compatible upgrade,
+When upgrading blockchain, usually a \textit{soft fork} or a \textit{hard fork}
+is introduced. A soft fork is backward compatible upgrade,
 agreement will be reached eventually even though a temorary fork may caused.
 In contract, a hard fork is a permanent divergence from the previous version of
 blockchain, which is inevitable unless all participants upgrade to the new
@@ -295,9 +295,53 @@ According to CoinMarketCap \cite{coinmarketcap} historical data of Bitcoin,
 daily average trading volume for year 2018 is around 6 billion USD.
 Assuming that on-chain trading volume is one-tenth of off-chain's (exchange
 internal), and processing fees is 1\textperthousand, it brings about 25,000 USD
-losses a hour because of disable deposition and withdrawal.
+losses a hour because of disabling deposition and withdrawal.
 
-In conclusion,
+Tezos \cite{tezos} is the first permissionless blockchain, who gives
+the concept of self-amendment, and accepts and deploys protocol upgrades
+without the need to hard fork.
+The candidates of amendment proposal are voted by \textit{StakeHolders}, and
+then achieve upgrade by exposing two procedures functions
+\cite{goodman2014tezos}
+$set\_test\_protocol$ and $promote\_test\_protocol$ to the protocol.
+Since Tezos' implementation programming language OCaml is functional
+programming, supporting the feature of compilation on the fly, there will
+provide service continuously during the upgrade time.
+
+Nevertheless, the way of Tezos self-amendment, or upgrade in other words,
+still has limitations.
+First of all, Tezos' upgrade functions replace the current protocol
+with a new one, instead of keeping the historical protcols available at the
+same time, making it impossible to run the previous after done unless
+reverse replacement again.
+Suppose that Tezos is in the situation where the current protocol is the latest
+while transactions to be verified and validated isn't. In that case, the latest
+protocol must cover all possibilities that Tezos may reach, which in require of
+protocol backward compatible, and makes protocol logic complicated further.
+Second, protocols being executed concurrently is impossible neither, much less
+correctness of concurrent execution results.
+
+In conclusion, limitations, from which blockchain upgrade may suffer,
+including but not limited to those are as follows:
+\begin{itemize}
+  \item Traditional upgrade way is not fit for blockchain, because of the
+    feature of untrusted and decentralized of blockchain.
+  \item Usually, a hard fork it may raise, which afftects the community with
+    split.
+  \item Unfriendly service and unnecessary economic losses for exchanges.
+  \item Multi-version protocol execution and the correctness of concurrent
+    execution are unsolved.
+\end{itemize}
+
+In this paper we describe
+\textit{Blockchain Runtime Environment} (BRE) addressing these limitations.
+BRE provides the environment for upgrading, both permissionless and
+permissioned blockchain, with continuous service during the upgrade period
+without hard fork.
+Generally, BRE is an accompanying system that is not going to run
+independently,  but will interact with blockchain when manipulating upgrade.
+Specifically, for a blockchain node, which has installed BRE, is
+running a blockchain client process and a friend process BRE at the same time.
 
 \section{Background}
 
@@ -308,13 +352,13 @@ architecture designing purpose and principle. After that, we introduce Blockchai
 Runtime Environment architecture, system components and working flow included.
 
 \subsection{Overview}
-\textit{Blockchain Runtime Environment} (BRE) is an accompanying system for upgrading,
-both permissionless and permissioned, blockchain.
-Generally, BRE is not going to
-run independently, but will interact with blockchain when manipulating
-upgrade. Specifically, for a blockchain node, which has installed BRE, is
-running a blockchain client (or simply client) process and a friend process BRE
-at the same time.
+%\textit{Blockchain Runtime Environment} (BRE) is an accompanying system for upgrading,
+%both permissionless and permissioned blockchain.
+%Generally, BRE is not going to
+%run independently, but will interact with blockchain when manipulating
+%upgrade. Specifically, for a blockchain node, which has installed BRE, is
+%running a blockchain client (or simply client) process and a friend process BRE
+%at the same time.
 
 Upgrading blockchain, actually, is upgrading blockchain protocol.
 Blockchain protocol is the parameters that blockchain holds, including block
