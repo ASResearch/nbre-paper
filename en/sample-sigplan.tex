@@ -324,24 +324,67 @@ correctness of concurrent execution results.
 In conclusion, limitations, from which blockchain upgrade may suffer,
 including but not limited to those are as follows:
 \begin{itemize}
-  \item Traditional upgrade way is not fit for blockchain, because of the
-    feature of untrusted and decentralized of blockchain.
-  \item Usually, a hard fork it may raise, which afftects the community with
-    split.
-  \item Unfriendly service and unnecessary economic losses for exchanges.
-  \item Multi-version protocol execution and the correctness of concurrent
-    execution are unsolved.
+  \item Traditional software upgrade or system upgrade way is not fit for
+    blockchain, because of the feature of untrusted and decentralized of
+    blockchain.
+  \item Usually, current blockchain upgrade way may raise a hard fork, which
+    afftects the community with split.
+  \item For exchanges, current blockchain upgrade way provides unfriendly
+    service, causes unnecessary economic losses.
+  \item Tezos remains multi-version protocol execution and the correctness of
+    concurrent execution unsolved.
 \end{itemize}
 
 In this paper we describe
-\textit{Blockchain Runtime Environment} (BRE) addressing these limitations.
+\textit{Blockchain Runtime Environment} (BRE) to address these limitations.
 BRE provides the environment for upgrading, both permissionless and
 permissioned blockchain, with continuous service during the upgrade period
-without hard fork.
-Generally, BRE is an accompanying system that is not going to run
-independently,  but will interact with blockchain when manipulating upgrade.
-Specifically, for a blockchain node, which has installed BRE, is
-running a blockchain client process and a friend process BRE at the same time.
+without hard fork. BRE manipulates blockchain upgrade by the stage of upgrades
+deployment, management and execution.
+
+For the first stage,
+the clients deploy upgrades by sending a transaction, whose payload
+field packed into upgrades source code, signaturing by a group
+of members, called committee. Those who receive the transaction will collect
+upgrades source code immediately. Sending a transaction for
+upgrade takes use of distributed system's broadcast and consensual feature,
+overcomes inconvenience of decentralization brings.
+On the other hand, signaturing the transaction by committee avoids someone
+untrusted being in charge of and does harm to blockchain, unless the majority
+of committee are corrupted.
+
+When upgrades deployed, the clients, including exchanges' peers, are unaware
+of it, because it's a transaction with upgrades in it, no different
+from other transactions to the public.
+Therefore, everything is as just it is, neither a hard fork nor service
+interuption will meet.
+
+For upgrades management stage, a list of historical upgrades are under version
+control, as well as upgrades persistence.
+
+For the last upgrades execution stage, upgrades are executed concurrently in
+consideration of performance. To implement this feature, Just-In-Time
+compilation and \textit{software transactional memory} (STM) are introduced.
+This stage hits the problem that Tezos remains.
+
+To achieve upgrade stages, BRE needs to contain the following services:
+\begin{itemize}
+  \item Upgrades deployment service is responsible for packaging upgrades,
+    signaturing and sending transaction.
+  \item Upgrades management service parses upgrades from received transaction
+    and carries on version control.
+  \item Upgrades execution service runs upgrades concurrently with JIT compiler
+    and STM technology.
+\end{itemize}
+
+The remainder of this paper is organized as follows. Section 2 introduces the
+background of blockchain upgrade recently, and technology of Just-In-Time
+compilation and Software Transactional Memory. In Section 3, blockchain
+abstraction, architecture design purpose and principle, as well as upgrade
+procedure are illustrated. Section 4 describes the detail implementation of
+architecture components. Performance of each component and the whole system are
+evaluted, analysis of the results are given in Section 5. In Section 6, we give
+a conclusion.
 
 \section{Background}
 
@@ -352,13 +395,10 @@ architecture designing purpose and principle. After that, we introduce Blockchai
 Runtime Environment architecture, system components and working flow included.
 
 \subsection{Overview}
-%\textit{Blockchain Runtime Environment} (BRE) is an accompanying system for upgrading,
-%both permissionless and permissioned blockchain.
-%Generally, BRE is not going to
-%run independently, but will interact with blockchain when manipulating
-%upgrade. Specifically, for a blockchain node, which has installed BRE, is
-%running a blockchain client (or simply client) process and a friend process BRE
-%at the same time.
+BRE is an accompanying system that is not going to run independently,
+but will interact with blockchain when manipulating upgrade.
+Specifically, for a blockchain node, which has installed BRE, is running a
+blockchain client process and a friend process BRE at the same time.
 
 Upgrading blockchain, actually, is upgrading blockchain protocol.
 Blockchain protocol is the parameters that blockchain holds, including block
@@ -545,9 +585,9 @@ protocol could even provide Turning Complete services for blockchain system,
 which smart contract would never achieve.
 
 
-\subsection{Protocol Upgrade}
+\subsection{Protocol Management}
 After protocol deployment phase, blockchain system upgrade goes to the next
-protocol upgrade phase. In this phase, BRE's components \textit{protocol
+protocol management phase. In this phase, BRE's components \textit{protocol
   representation manager} (PRM), \textit{compiler frontend} (CF) and
 \textit{protocol representation database} (PRD) are involved in. PRM is responsible
 for protocol collection and protocol version management, with the help of CF
